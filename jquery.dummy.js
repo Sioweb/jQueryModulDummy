@@ -4,14 +4,6 @@
 
   var pluginName = 'specialSlider',
       /* Enter PluginOptions */
-      standardOptions = {
-        debug: true,
-        enabled: true,
-        loadImagesFirst: true,
-        container: window,
-        after: function(){},
-        before: function(){},
-      },
 
   PluginClass = function() {
 
@@ -79,6 +71,14 @@
     var element = typeof this === 'function'?$('html'):this;
     return element.each(function(k,i) {
       var pluginClass = $.data(this, pluginName),
+          standardOptions = {
+            debug: true,
+            enabled: true,
+            loadImagesFirst: true,
+            container: window,
+            after: function(){},
+            before: function(){},
+          },
           args = Array.prototype.slice.call(arguments);
 
       if(!settings || typeof settings === 'object' || settings === 'init') {
