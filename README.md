@@ -42,7 +42,7 @@ $('.container').pluginName({
   after: function(){console.log('Load after');}
 });
 ```
-##Methoden direkt ausführen
+##Run Methods directly
 
 ```
 $.pluginName('enable', object Options);
