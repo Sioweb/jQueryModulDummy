@@ -42,3 +42,12 @@ $('.container').pluginName({
   after: function(){console.log('Load after');}
 });
 ```
+##Methoden direkt ausführen
+
+```
+$.pluginName('enable', object Options);
+$('.container').pluginName('enable', object Options);
+
+$.pluginName('disable', object Options);
+$('.container').pluginName('disable', object Options);
+```
