@@ -2,7 +2,7 @@
 
   "use strict";
 
-  var pluginName = 'pluginName',
+  var pluginName = 'specialSlider',
       /* Enter PluginOptions */
       standardOptions = {
         debug: true,
@@ -27,6 +27,10 @@
       this.elem = elem;
       this.item = $(this.elem);
       this.container = $(this.container);
+
+      if(!selfObj.enabled)
+        return;
+      
       if(this.loadImagesFirst && (this.item.prop("tagName").toLowerCase() === 'img' || this.item.find('img').length > 0)) {
         img = $('.image img');
         if(img.length > 0) {
@@ -50,16 +54,23 @@
     };
 
     this.loaded = function() {
+      if(!selfObj.enabled)
+        return;
+
       selfObj.internBefore();
       if(selfObj.debug) console.log('Plugin loaded',(arguments[0]?'with images':'without images'));
       selfObj.internAfter();
     };
 
     this.internBefore = function() {
+      if(!selfObj.enabled)
+        return;
       selfObj.before();
     };
 
     this.internAfter = function() {
+      if(!selfObj.enabled)
+        return;
       selfObj.after();
     };
   };
