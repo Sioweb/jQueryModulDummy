@@ -5,13 +5,18 @@
   var pluginName = 'pluginName',
       /* Enter PluginOptions */
       standardOptions = {
-        enabled: settings.enabled||true,
-        container: settings.container||window,
+        debug: true,
+        enabled: true,
+        loadImagesFirst: true,
+        container: window,
+        after: function(){},
+        before: function(){},
       },
 
   PluginClass = function() {
 
-    var selfObj = this;
+    var selfObj = this,
+        img = null;
     this.item = false;
     
     this.init = function(elem) {
@@ -22,6 +27,17 @@
       this.elem = elem;
       this.item = $(this.elem);
       this.container = $(this.container);
+      if(this.loadImagesFirst && (this.item.prop("tagName").toLowerCase() === 'img' || this.item.find('img').length > 0)) {
+        img = $('.image img');
+        if(img.length > 0) {
+          img.bind('load',function() {
+            img.loaded = true;
+            selfObj.loaded(1);
+          }).each(function(){ if(this.complete) $(this).trigger('load');});
+        }
+      } else { this.loaded(); }
+
+      if(this.debug) console.log('Plugin "'+pluginName+'" initialized');
     };
 
     this.disable = function() {
@@ -32,42 +48,50 @@
     this.enable = function() {
       selfObj.enabled = true;
     };
+
+    this.loaded = function() {
+      selfObj.internBefore();
+      if(selfObj.debug) console.log('Plugin loaded',(arguments[0]?'with images':'without images'));
+      selfObj.internAfter();
+    };
+
+    this.internBefore = function() {
+      selfObj.before();
+    };
+
+    this.internAfter = function() {
+      selfObj.after();
+    };
   };
 
-  $.fn[pluginName] = function(settings) {
-
-    return this.each(function(k,i) {
-      var PluginClass = $.data(this, pluginName),
+  $[pluginName] = $.fn[pluginName] = function(settings) {
+    var element = typeof this === 'function'?$('html'):this;
+    return element.each(function(k,i) {
+      var pluginClass = $.data(this, pluginName),
           args = Array.prototype.slice.call(arguments);
-      
 
-      if(typeof settings === 'object' || settings === 'init' || !settings) {
+      if(!settings || typeof settings === 'object' || settings === 'init') {
 
-        if(!PluginClass) {
+        if(!pluginClass) {
           if(settings === 'init')
             settings = args[1] || {};
 
-          PluginClass = new PluginClass();
-
-          PluginClass = $.extend(settings,PluginClass);
-          
-          PluginClass = $.extend(standardOptions,PluginClass);
-          
+          pluginClass = new PluginClass();
+          if(settings)
+            standardOptions = $.extend(standardOptions,settings);
+          pluginClass = $.extend(standardOptions,pluginClass);
           /** Initialisieren. */
-          PluginClass.init(this);
-          $.data(this, pluginName, PluginClass);
+          pluginClass.init(this);
+          $.data(this, pluginName, pluginClass);
         } else {
-          // $.error('Plugin is already initialized for this object.');
           return;
         }
-      } else if(!PluginClass) {
-        // $.error('Plugin is not initialized for this object yet.');
+      } else if(!pluginClass) {
         return;
-      } else if(PluginClass[settings]) {
+      } else if(pluginClass[settings]) {
         var method = settings;
-        PluginClass[method]();
+        pluginClass[method]();
       } else {
-        // $.error('Method ' +  settings + ' does not exist on jQuery.pluginName.');
         return;
       }
     });
