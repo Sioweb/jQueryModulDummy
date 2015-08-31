@@ -20,6 +20,8 @@ Happy coding!
 
 ##Options
 
+You can find the default values at the bottom of the script. Search the variable *standardOptions*;
+
 - debug: true, (Print some debug info in console)
 - enabled: true, (Enables the plugin)
 - loadImagesFirst: true, (wait for load images)
