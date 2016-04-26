@@ -68,8 +68,11 @@
   };
 
   $[pluginName] = $.fn[pluginName] = function(settings) {
-    var element = typeof this === 'function'?$('html'):this;
-    return element.each(function(k,i) {
+    var element = typeof this === 'function'?$('html'):this,
+        newData = arguments[1]||{},
+        returnElement = [];
+        
+    returnElement[0] = element.each(function(k,i) {
       var pluginClass = $.data(this, pluginName),
           standardOptions = {
             debug: true,
@@ -86,10 +89,13 @@
         if(!pluginClass) {
           if(settings === 'init')
             settings = args[1] || {};
-
           pluginClass = new PluginClass();
           if(settings)
-            standardOptions = $.extend(standardOptions,settings);
+            standardOptions = $.extend(true,{},standardOptions,settings);
+
+          standardOptions.data = settings.data || [0,0,0,0];
+          standardOptions.labels = settings.labels || ['','','',''];
+
           pluginClass = $.extend(standardOptions,pluginClass);
           /** Initialisieren. */
           pluginClass.init(this);
@@ -101,11 +107,14 @@
         return;
       } else if(pluginClass[settings]) {
         var method = settings;
-        pluginClass[method]();
+        returnElement[1] = pluginClass[method](newData);
       } else {
         return;
       }
     });
+
+    if(returnElement[1] !== undefined) return returnElement[1];
+    return returnElement[0];
 
   };
   
