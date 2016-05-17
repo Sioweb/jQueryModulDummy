@@ -4,12 +4,22 @@
 
   var pluginName = 'specialSlider',
       /* Enter PluginOptions */
+      standardOptions = {
+	      debug: true,
+	      enabled: true,
+	      loadImagesFirst: true,
+	      container: window,
+	      after: function(){},
+	      before: function(){},
+	    },
 
   PluginClass = function() {
 
     var selfObj = this,
         img = null;
     this.item = false;
+
+    this.initOptions = new Object(standardOptions);
     
     this.init = function(elem) {
       selfObj = this;
@@ -74,14 +84,6 @@
         
     returnElement[0] = element.each(function(k,i) {
       var pluginClass = $.data(this, pluginName),
-          standardOptions = {
-            debug: true,
-            enabled: true,
-            loadImagesFirst: true,
-            container: window,
-            after: function(){},
-            before: function(){},
-          },
           args = Array.prototype.slice.call(arguments);
 
       if(!settings || typeof settings === 'object' || settings === 'init') {
@@ -90,13 +92,16 @@
           if(settings === 'init')
             settings = args[1] || {};
           pluginClass = new PluginClass();
+
+          var newOptions = new Object(pluginClass.initOptions);
+
+          /* Space to reset some standart options */
+
+          /***/
+
           if(settings)
-            standardOptions = $.extend(true,{},standardOptions,settings);
-
-          standardOptions.data = settings.data || [0,0,0,0];
-          standardOptions.labels = settings.labels || ['','','',''];
-
-          pluginClass = $.extend(standardOptions,pluginClass);
+            newOptions = $.extend(true,{},newOptions,settings);
+          pluginClass = $.extend(newOptions,pluginClass);
           /** Initialisieren. */
           pluginClass.init(this);
           $.data(this, pluginName, pluginClass);
