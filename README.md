@@ -20,7 +20,7 @@ Happy coding!
 
 ##Options
 
-You can find the default values at the bottom of the script. Search the variable *standardOptions*;
+You find the default values at the top of the script. Search for the variable *standardOptions*;
 
 - debug: true, (Print some debug info in console)
 - enabled: true, (Enables the plugin)
@@ -44,6 +44,7 @@ $('.container').pluginName({
   after: function(){console.log('Load after');}
 });
 ```
+
 ##Run Methods directly
 
 ```
@@ -53,3 +54,18 @@ $('.container').pluginName('enable', object Options);
 $.pluginName('disable', object Options);
 $('.container').pluginName('disable', object Options);
 ```
+
+## Changelog
+
+### 2.0
+
+- Feature: Keep standardOption in head to work with origin standard values in methods after initialization
+- Feature: Return method data insteat of the jQuery object if return data is set
+- New: Callme(); Run this method $("selector").pluginName('callme', {some:'data'}); it will return a string.
+
+### 1.0
+
+- Creating template
+- New Enable/Disable method
+- New: Some Callbacks
+
