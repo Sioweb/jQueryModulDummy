@@ -75,6 +75,11 @@
         return;
       selfObj.after();
     };
+
+    this.callme = function(newData) {
+    	console.log("Called this method with data:",data);
+    	return "Success!";
+    };
   };
 
   $[pluginName] = $.fn[pluginName] = function(settings) {
