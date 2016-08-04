@@ -9,6 +9,7 @@
 	      enabled: true,
 	      loadImagesFirst: true,
 	      container: window,
+	      isHtml: false,
 	      after: function(){},
 	      before: function(){},
 	    },
@@ -29,6 +30,7 @@
       this.elem = elem;
       this.item = $(this.elem);
       this.container = $(this.container);
+      this.isHTML = selfObj.item[0].tagName.toLowerCase() === 'html';
 
       if(!selfObj.enabled)
         return;
@@ -84,18 +86,17 @@
 
   $[pluginName] = $.fn[pluginName] = function(settings) {
     var element = typeof this === 'function'?$('html'):this,
-        newData = arguments[1]||{},
-        returnElement = [];
+	newData = arguments[1]||{},
+	returnElement = [];
         
     returnElement[0] = element.each(function(k,i) {
-      var pluginClass = $.data(this, pluginName),
-          args = Array.prototype.slice.call(arguments);
+      var pluginClass = $.data(this, pluginName);
 
       if(!settings || typeof settings === 'object' || settings === 'init') {
 
         if(!pluginClass) {
           if(settings === 'init')
-            settings = args[1] || {};
+            settings = arguments[1] || {};
           pluginClass = new PluginClass();
 
           var newOptions = new Object(pluginClass.initOptions);
@@ -109,9 +110,12 @@
           pluginClass = $.extend(newOptions,pluginClass);
           /** Initialisieren. */
           pluginClass.init(this);
-          $.data(this, pluginName, pluginClass);
+          if(element.prop('tagName').toLowerCase() !== 'html')
+          	$.data(this, pluginName, pluginClass);
         } else {
-          return;
+	  pluginClass.init(this,1);
+	  if(element.prop('tagName').toLowerCase() !== 'html')
+	    $.data(this, pluginName, pluginClass);
         }
       } else if(!pluginClass) {
         return;
@@ -124,7 +128,7 @@
     });
 
     if(returnElement[1] !== undefined) return returnElement[1];
-    return returnElement[0];
+      return returnElement[0];
 
   };
   
