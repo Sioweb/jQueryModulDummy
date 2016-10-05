@@ -109,6 +109,7 @@
             newOptions = $.extend(true,{},newOptions,settings);
           pluginClass = $.extend(newOptions,pluginClass);
           /** Initialisieren. */
+          this[pluginName] = pluginClass;
           pluginClass.init(this);
           if(element.prop('tagName').toLowerCase() !== 'html')
           	$.data(this, pluginName, pluginClass);
