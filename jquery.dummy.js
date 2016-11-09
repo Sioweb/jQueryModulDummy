@@ -7,9 +7,9 @@
       standardOptions = {
 	      debug: true,
 	      enabled: true,
-	      loadImagesFirst: true,
 	      container: window,
 	      isHtml: false,
+	      images: null,
 	      after: function(){},
 	      before: function(){},
 	    },
@@ -30,26 +30,22 @@
       this.elem = elem;
       this.item = $(this.elem);
       this.container = $(this.container);
-      this.isHTML = selfObj.item[0].tagName.toLowerCase() === 'html';
-
-      if(!selfObj.enabled)
-        return;
+      this.isHTML = selfObj.elem.tagName.toLowerCase() === 'html';
       
-      if(this.loadImagesFirst && (this.item.prop("tagName").toLowerCase() === 'img' || this.item.find('img').length > 0)) {
-        img = $('.image img');
-        if(img.length > 0) {
-          img.bind('load',function() {
-            img.loaded = true;
-            selfObj.loaded(1);
-          }).each(function(){ if(this.complete) $(this).trigger('load');});
-        }
-      } else { this.loaded(); }
+      if(this.images !== null) {
+        var img = this.item.find(this.images),
+            loaded = 0;
 
-      if(this.debug) console.log('Plugin "'+pluginName+'" initialized');
+        if(img.length) {
+          img.bind('load',function() {
+            if(loaded == img.length)
+              selfObj.loaded();
+          }).each(function(){ if(this.complete) {loaded++;$(this).trigger('load');}});
+        } else this.loaded();
+      } else this.loaded();
     };
 
     this.disable = function() {
-      clearTimeout(selfObj.scrollTimeOut);
       selfObj.enabled = false;
     };
 
