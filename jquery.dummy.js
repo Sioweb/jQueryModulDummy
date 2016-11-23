@@ -3,24 +3,26 @@
   "use strict";
 
   var pluginName = 'specialSlider',
-      /* Enter PluginOptions */
-      standardOptions = {
-	      debug: true,
-	      enabled: true,
-	      container: window,
-	      isHtml: false,
-	      images: null,
-	      after: function(){},
-	      before: function(){},
-	    },
+      PluginClass;
+
+
+  /* Enter PluginOptions */
+  $[pluginName+'Default'] = {
+    debug: true,
+    enabled: true,
+    container: window,
+    isHtml: false,
+    images: null,
+    after: function(){},
+    before: function(){},
+  };
+  
 
   PluginClass = function() {
 
-    var selfObj = this,
-        img = null;
+    var selfObj = this;
     this.item = false;
-
-    this.initOptions = new Object(standardOptions);
+    this.initOptions = new Object($.confirmDefault);
     
     this.init = function(elem) {
       selfObj = this;
@@ -33,14 +35,15 @@
       this.isHTML = selfObj.elem.tagName.toLowerCase() === 'html';
       
       if(this.images !== null) {
-        var img = this.item.find(this.images),
-            loaded = 0;
+        var loaded = 1;
+        this.images = this.item.find(this.images);
 
-        if(img.length) {
-          img.bind('load',function() {
-            if(loaded == img.length)
+        if(this.images.length) {
+          this.images.bind('load',function() {
+            if((loaded++) == selfObj.images.length) {
               selfObj.loaded();
-          }).each(function(){ if(this.complete) {loaded++;$(this).trigger('load');}});
+            }
+          }).each(function(){if(this.complete) {$(this).trigger('load');}});
         } else this.loaded();
       } else this.loaded();
     };
@@ -75,15 +78,15 @@
     };
 
     this.callme = function(newData) {
-    	console.log("Called this method with data:",data);
-    	return "Success!";
+      console.log("Called this method with data:",data);
+      return "Success!";
     };
   };
 
   $[pluginName] = $.fn[pluginName] = function(settings) {
     var element = typeof this === 'function'?$('html'):this,
-	newData = arguments[1]||{},
-	returnElement = [];
+        newData = arguments[1]||{},
+        returnElement = [];
         
     returnElement[0] = element.each(function(k,i) {
       var pluginClass = $.data(this, pluginName);
@@ -108,11 +111,11 @@
           this[pluginName] = pluginClass;
           pluginClass.init(this);
           if(element.prop('tagName').toLowerCase() !== 'html')
-          	$.data(this, pluginName, pluginClass);
+            $.data(this, pluginName, pluginClass);
         } else {
-	  pluginClass.init(this,1);
-	  if(element.prop('tagName').toLowerCase() !== 'html')
-	    $.data(this, pluginName, pluginClass);
+          pluginClass.init(this,1);
+          if(element.prop('tagName').toLowerCase() !== 'html')
+            $.data(this, pluginName, pluginClass);
         }
       } else if(!pluginClass) {
         return;
