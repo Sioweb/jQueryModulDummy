@@ -55,7 +55,26 @@ $.pluginName('disable', object Options);
 $('.container').pluginName('disable', object Options);
 ```
 
+## Default options
+
+You can config your plugin with global default options now. Every instance will use'em.
+
+```
+// Plugin name = 'specialSlider'
+$.specialSliderDefault.delay = 2000;
+$.specialSliderDefault.slideEffect = 'fade';
+
+$.specialSlider(); // delay will be 2000; slideEffect will be fade
+// ... 
+$.specialSlider(); // delay will be 2000; slideEffect will be fade
+```
+
 ## Changelog
+
+### 3.0
+
+- Better Image preload
+- Global default options
 
 ### 2.0
 
