@@ -22,7 +22,7 @@
 
     var selfObj = this;
     this.item = false;
-    this.initOptions = new Object($.confirmDefault);
+    this.initOptions = new Object($[pluginName+'Default']);
     
     this.init = function(elem) {
       selfObj = this;
