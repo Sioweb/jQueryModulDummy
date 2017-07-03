@@ -87,9 +87,3 @@ $.specialSlider(); // delay will be 2000; slideEffect will be fade
 - Creating template
 - New Enable/Disable method
 - New: Some Callbacks
-
-- [ ] Filter
-	- [ ] Multiselect-Formfield
-	- [ ] Definiert die Angaben im Chart, Legende und Skalierung
-- Tabelle
-	- [x] Siehe Charts/Tabellen
