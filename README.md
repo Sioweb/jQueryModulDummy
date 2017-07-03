@@ -4,7 +4,7 @@ This is a first step module template for jquery plugins. It contains some method
 
 Happy coding!
 
-##HowTo
+## HowTo
 
 ```
 (function($){$(function(){
@@ -18,7 +18,7 @@ Happy coding!
 });})(jQuery);
 ```
 
-##Options
+## Options
 
 You find the default values at the top of the script. Search for the variable *standardOptions*;
 
@@ -29,7 +29,7 @@ You find the default values at the top of the script. Search for the variable *s
 - after: function(){}, (callback for the beginning of intern method loaded)
 - before: function(){}, (callback for the end of intern method loaded)
 
-##Simple Test
+## Simple Test
 
 Just replace pluginName with your plugin name
 
@@ -45,7 +45,7 @@ $('.container').pluginName({
 });
 ```
 
-##Run Methods directly
+## Run Methods directly
 
 ```
 $.pluginName('enable', object Options);
@@ -88,3 +88,8 @@ $.specialSlider(); // delay will be 2000; slideEffect will be fade
 - New Enable/Disable method
 - New: Some Callbacks
 
+- [ ] Filter
+	- [ ] Multiselect-Formfield
+	- [ ] Definiert die Angaben im Chart, Legende und Skalierung
+- Tabelle
+	- [x] Siehe Charts/Tabellen
