@@ -49,6 +49,22 @@
 			} else this.loaded();
 		};
 
+		this.setupHandler = function(handler) {
+			var selector = arguments[1]||selfObj[handler];
+
+			if(selfObj[handler] !== undefined) {
+				selfObj['$'+handler] = $(selector);
+			} else {
+				return;
+			}
+
+			if(!selfObj['$'+handler].length) {
+				return;
+			}
+
+			return true;
+		};
+
 		this.disable = function() {
 			selfObj.enabled = false;
 		};
